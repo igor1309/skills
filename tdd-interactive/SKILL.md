@@ -1,7 +1,7 @@
 ---
 name: tdd-interactive
 description: "Interactive Test-Driven Development workflow with reviewer-in-the-loop. Implements the RED-GREEN-REFACTOR cycle with two mandatory verification gates where a reviewer (human or AI) approves work before progression. Applies to any code development that follows test-first methodology: features, bug fixes, refactoring, or enhancements. Invoked when TDD discipline with step-by-step verification is required."
-version: "2.0.2"
+version: "2.1.2"
 author: Igor Malyarov
 ---
 
@@ -54,6 +54,10 @@ Return to Phase 1 for next test
 
 **If you encounter problems during any phase**, see `./escalation-protocol.md` for guidance on when and how to ask for help.
 
+## Getting Started
+
+**Announce:** "I'm using the TDD Interactive skill. I will stop at RED and REFACTOR for your approval (just 'go' me)."
+
 ## Phase 1: RED (Write Failing Test)
 
 ### Objective
@@ -72,7 +76,10 @@ Write a test that fails for the right reason, demonstrating what needs to be imp
    - Never over-assert beyond what the test name states
 5. **Run the test and verify it FAILS for the RIGHT reason**
    - For language-specific test commands, see `./testing-guide.md`
-6. **If test passes immediately, BREAK the implementation** to see RED
+6. **If test passes immediately** - You over-implemented during RED
+   - This violates TDD - the test must fail first
+   - Review your production code changes and remove implementation logic
+   - Return to step 4 and ensure you're writing only the test
 7. **Confirm the failure message shows exactly what's missing**
 
 ### Critical Requirement: Proper RED State
@@ -104,6 +111,29 @@ error: cannot find 'Account' in scope
 ```
 This is a compilation error, not a proper RED state.
 
+### Pre-STOP #1 Self-Review (MANDATORY)
+
+Before presenting to reviewer, verify you haven't over-implemented.
+
+**Change Analysis:**
+Review production code changes (use `git diff` to examine modifications).
+
+Example showing multiple changes - **list ALL your changes:**
+
+| File | Line(s) | Change Description | Category | Action |
+|------|---------|-------------------|----------|--------|
+| Example.swift | 23 | Added property declaration | API | Keep |
+| Example.swift | 45 | Added method call | IMPLEMENTATION | ❌ Remove |
+
+**Categories:**
+- **API**: Type declarations, method signatures, property declarations, parameters (no behavior)
+- **IMPLEMENTATION**: Method calls, logic, calculations, control flow, assignments
+
+**Action required:**
+- If NO production files modified → Good, proceed to STOP #1
+- If any changes marked IMPLEMENTATION → remove them, re-run test, redo this analysis
+- Only proceed to STOP #1 when all changes are API-only
+
 ### Stop Condition
 
 **STOP #1 HERE.** Present the failing test output to the reviewer and **wait for explicit "go" command** to proceed to GREEN.
@@ -123,12 +153,13 @@ For reviewers: See `./review-guidelines.md` for RED phase review criteria.
 ### Common Mistakes to Avoid
 
 - ❌ Treating compilation errors as RED state
+- ❌ Adding implementation logic to production code during RED phase
+- ❌ Skipping the mandatory Pre-STOP #1 Self-Review
 - ❌ Proceeding to GREEN without stopping
 - ❌ Proceeding to GREEN without explicit "go" from reviewer
 - ❌ Treating reviewer feedback as approval to proceed
 - ❌ Writing test that passes immediately without verifying RED
 - ❌ Over-asserting (checking more than test name promises)
-- ❌ Creating production code that isn't driven by the test
 
 ## Phase 2: GREEN (Make Test Pass)
 
@@ -286,7 +317,7 @@ Apply these rules throughout the entire workflow:
 5. **Two stops only** - STOP #1 at RED, STOP #2 after REFACTOR (not at every phase)
 6. **One test at a time** - Complete the full cycle before moving on
 7. **Test name precision** - Assert exactly what the test name promises
-8. **Minimal implementation** - Only write code driven by failing tests
+8. **Minimal implementation** - Write only enough code to make the current failing test pass
 9. **Reviewer approval required** - Must wait for approval at each verification gate
 
 ## Test Naming Convention
@@ -313,7 +344,7 @@ Use this convention for naming tests:
 2. **STOP #2**: After REFACTOR - Present refactored code to reviewer, process feedback or get approval
 
 ### Phase Flow
-- **RED**: Write failing test → STOP #1 (wait for reviewer approval)
+- **RED**: Write failing test → Pre-STOP #1 Self-Review → STOP #1 (wait for reviewer approval)
 - **GREEN**: Minimal implementation → No stop
 - **COMMIT**: Update docs, commit → No stop
 - **REFACTOR**: Improve code → STOP #2 (wait for reviewer approval)
