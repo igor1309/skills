@@ -103,19 +103,60 @@ Review production code changes (use `git diff` to examine modifications).
 
 Example showing multiple changes - **list ALL your changes:**
 
-| File | Line(s) | Change Description | Category | Action |
-|------|---------|-------------------|----------|--------|
-| Example.swift | 23 | Added property declaration | API | Keep |
-| Example.swift | 45 | Added method call | IMPLEMENTATION | ❌ Remove |
+| File | Line(s) | Change Description | Test Observes? | Action |
+|------|---------|-------------------|----------------|--------|
+| Example.swift | 23 | Added `balance` property | YES (test asserts on it) | Keep |
+| Example.swift | 31 | Added `Repository` protocol | NO (test doesn't mention it) | ❌ Remove |
+| Example.swift | 45 | Added method call | NO (implementation logic) | ❌ Remove |
 
-**Categories:**
-- **API**: Type declarations, method signatures, property declarations, parameters (no behavior)
-- **IMPLEMENTATION**: Method calls, logic, calculations, control flow, assignments
+---
+
+### Understanding "Observe"
+
+**Example test:**
+```
+account = Account(balance: 100)
+account.reserve(50)
+assertEqual(account.balance, 50)
+```
+
+**What THIS test observes:**
+- `Account` type → YES (test creates it)
+- `balance` property → YES (test asserts on it)
+- `reserve()` method → YES (test calls it)
+- `Repository` protocol → NO (test doesn't mention it)
+- `RepositorySpy` class → NO (test doesn't verify it)
+
+---
+
+**Decision criteria: "Does THIS test OBSERVE this code?"**
+
+Test observes code when:
+- Test asserts on it: `assertEqual(account.balance, 50)`
+- Test verifies it: `assertTrue(spy.wasCalled)`
+- Test creates it: `Account(balance: 100)`
+
+Test does NOT observe:
+- Dependencies method might use internally (Repository, Validator, etc.)
+- Logic inside methods
+- Future needs or "better architecture"
+
+**Critical distinction:** "Test calls reserve()" ≠ "Test observes Repository that reserve might use internally"
+
+**Common mistake:** Agent creates Repository because "reserve needs Repository to work" → but test doesn't assert on Repository → Delete it
+
+**After deletions, what's left:**
+- Only code test directly references (creates, calls, asserts on)
+- Method stubs: empty body or return default (0, [], "", false)
 
 **Action required:**
 - If NO production files modified → Good, critic review complete
-- If any changes marked IMPLEMENTATION → remove them, re-run test, redo this analysis
-- Only proceed when all changes are API-only
+- If any changes where "Test Observes = NO" → remove them, re-run test, redo this analysis
+- Only proceed when all changes have "Test Observes = YES"
+
+**After deletions verify:**
+- Test compiles (if not: restore only what test directly uses, not extras)
+- Test fails with assertion error (not compilation error)
 
 **✅ CONTEXT SWITCH BACK: You are now the test implementer again.**
 
