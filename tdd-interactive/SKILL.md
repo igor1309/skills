@@ -1,7 +1,7 @@
 ---
 name: tdd-interactive
 description: "Interactive Test-Driven Development workflow with reviewer-in-the-loop. Implements the RED-GREEN-REFACTOR cycle with two mandatory verification gates where a reviewer (human or AI) approves work before progression. Applies to any code development that follows test-first methodology: features, bug fixes, refactoring, or enhancements. Invoked when TDD discipline with step-by-step verification is required."
-version: "2.3.1"
+version: "2.5.0"
 author: Igor Malyarov
 ---
 
@@ -12,6 +12,8 @@ author: Igor Malyarov
 This skill implements Test-Driven Development through an **interactive, reviewer-approved workflow** with two mandatory verification gates. A **reviewer** (human senior engineer or AI verifier) validates work at critical checkpoints, enabling **incremental, verified development**.
 
 This workflow requires test infrastructure and reviewer availability for verification gates.
+
+**In addition to this workflow, follow the code quality and testing standards in `./references/quality-standards.md`.**
 
 **Workflow structure:**
 - **Executing agent**: Performs TDD implementation work
@@ -52,7 +54,7 @@ Phase 5: REFACTOR_COMMIT
 Return to Phase 1 for next test
 ```
 
-**If you encounter problems during any phase**, see `./escalation-protocol.md` for guidance on when and how to ask for help.
+**If you encounter problems during any phase**, see `./references/escalation-protocol.md` for guidance on when and how to ask for help.
 
 ## Getting Started
 
@@ -73,15 +75,15 @@ Write a test that fails for the right reason, demonstrating what needs to be imp
 3. **Write the test using Assert-First workflow**
    - Start with assertion matching test name promise
    - Work backwards to action, then setup
-   - See `./red-phase-guide.md` for detailed workflow and examples
+   - See `./references/red-phase-guide.md` for detailed workflow and examples
 4. **Ensure test matches exactly what the test name promises**
    - If test says "should fail" → only verify error thrown
    - If test says "should increase" → only verify value increased
    - Never over-assert beyond what test name states
 5. **Run the test and verify it FAILS for the RIGHT reason**
-   - For language-specific test commands, see `./testing-guide.md`
+   - For language-specific test commands, see `./references/testing-guide.md`
    - Proper RED: test compiles and fails with clear message
-   - See `./red-phase-guide.md` for RED state requirements
+   - See `./references/red-phase-guide.md` for RED state requirements
 6. **If test passes immediately** → You over-implemented
    - Remove implementation logic, re-run test
 7. **Perform Pre-STOP #1 Self-Review**
@@ -89,7 +91,7 @@ Write a test that fails for the right reason, demonstrating what needs to be imp
    - Review production code changes (git diff)
    - Categorize as API vs IMPLEMENTATION
    - Remove any IMPLEMENTATION changes
-   - See `./red-phase-guide.md` for complete review process
+   - See `./references/red-phase-guide.md` for complete review process
 
 ### Stop Condition
 
@@ -105,9 +107,9 @@ The reviewer will either:
 - Approve with "go" → Proceed to GREEN phase
 - Provide feedback → Address concerns, **return to STOP #1**, wait for "go" again
 
-For reviewers: See `./review-guidelines.md` for RED phase review criteria.
+For reviewers: See `./references/review-guidelines.md` for RED phase review criteria.
 
-**For detailed guidance, common mistakes, and examples**, see `./red-phase-guide.md`.
+**For detailed guidance, common mistakes, and examples**, see `./references/red-phase-guide.md`.
 
 ## Phase 2: GREEN (Make Test Pass)
 
@@ -120,7 +122,7 @@ Write minimal code to make the failing test pass.
 2. **Do NOT write extra code** for future tests
 3. **Do NOT refactor yet** - just make it green
 4. **Run ALL tests in the test suite** to ensure nothing broke and new test passes
-   - For language-specific test commands, see `./testing-guide.md`
+   - For language-specific test commands, see `./references/testing-guide.md`
 
 ### Stop Condition
 
@@ -202,7 +204,7 @@ At this stop, two paths are possible:
 - Run ALL tests to verify everything passes
 - Proceed immediately to Phase 5 to record the refactoring commit
 
-For reviewers: See `./review-guidelines.md` for REFACTOR phase review criteria.
+For reviewers: See `./references/review-guidelines.md` for REFACTOR phase review criteria.
 
 ### Common Mistakes to Avoid
 
