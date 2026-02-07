@@ -17,8 +17,8 @@
       "skills": [
         "./arch-spec-review",
         "./doc-drift-audit",
-        "./explore",
         "./job-search-strategy",
+        "./research",
         "./swift-package-manifest",
         "./tdd-interactive",
         "./tdd-scaffold-review"

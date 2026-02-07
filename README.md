@@ -19,21 +19,6 @@ Review architecture specifications for completeness, appropriate abstraction lev
 
 **Documentation:** See [arch-spec-review/SKILL.md](arch-spec-review/SKILL.md)
 
-### Explore
-
-Research phase for task execution. Investigate the codebase, build understanding, report findings without changing code or proposing solutions.
-
-**Key features:**
-- Restates task understanding to catch misinterpretation early
-- Explores relevant files, patterns, and conventions
-- Reports findings, risks, and unknowns
-- Asks clarifying questions when needed
-- Optional save-to-file for findings
-
-**Use when:** Starting any non-trivial task. Describe the task, then invoke `/explore` to get research output before planning or implementing.
-
-**Documentation:** See [explore/SKILL.md](explore/SKILL.md)
-
 ### Documentation Drift Audit
 
 Verify that markdown documentation accurately describes the current codebase. Detects factual mismatches between docs and code — wrong names, signatures, paths, behaviors. Does not rewrite, reformat, or improve docs.
@@ -63,6 +48,21 @@ Comprehensive job search strategy toolkit for analyzing job postings, discoverin
 **Use when:** Strategizing job searches, preparing tailored applications, developing competitive advantages, or coaching candidates through the job hunt process.
 
 **Documentation:** See [job-search-strategy/SKILL.md](job-search-strategy/SKILL.md)
+
+### Research
+
+Research phase for task execution. Investigate the codebase, build understanding, report findings without changing code or proposing solutions.
+
+**Key features:**
+- Restates task understanding to catch misinterpretation early
+- Explores relevant files, patterns, and conventions
+- Reports findings, risks, and unknowns
+- Asks clarifying questions when needed
+- Optional save-to-file for findings
+
+**Use when:** Starting any non-trivial task. Describe the task, then invoke `/research` to get research output before planning or implementing.
+
+**Documentation:** See [research/SKILL.md](research/SKILL.md)
 
 ### Swift Package Manifest
 
@@ -123,8 +123,8 @@ Then install the skills you want:
 ```
 /plugin install arch-spec-review
 /plugin install doc-drift-audit
-/plugin install explore
 /plugin install job-search-strategy
+/plugin install research
 /plugin install swift-package-manifest
 /plugin install tdd-interactive
 /plugin install tdd-scaffold-review
@@ -138,14 +138,14 @@ Alternatively, copy any skill folder to your Claude Code skills directory:
 # Install individual skills
 cp -r arch-spec-review ~/.claude/skills/
 cp -r doc-drift-audit ~/.claude/skills/
-cp -r explore ~/.claude/skills/
 cp -r job-search-strategy ~/.claude/skills/
+cp -r research ~/.claude/skills/
 cp -r swift-package-manifest ~/.claude/skills/
 cp -r tdd-interactive ~/.claude/skills/
 cp -r tdd-scaffold-review ~/.claude/skills/
 
 # Or install all skills at once
-cp -r arch-spec-review doc-drift-audit explore job-search-strategy swift-package-manifest tdd-interactive tdd-scaffold-review ~/.claude/skills/
+cp -r arch-spec-review doc-drift-audit job-search-strategy research swift-package-manifest tdd-interactive tdd-scaffold-review ~/.claude/skills/
 ```
 
 ## Usage
@@ -164,22 +164,6 @@ Review this architecture specification for completeness and appropriate abstract
 Or:
 ```
 Evaluate this architecture document to ensure it defines system boundaries without prescribing implementation details.
-```
-
-### Explore
-
-Invoke after describing a task to get research output before planning or coding.
-
-**Example prompt:**
-```
-Add caching to the API layer.
-/explore
-```
-
-Or:
-```
-The login flow has a bug where session tokens expire too early.
-/explore
 ```
 
 ### Documentation Drift Audit
@@ -208,6 +192,22 @@ Analyze this job posting and help me develop a targeted application strategy.
 Or:
 ```
 Help me identify skill gaps and create a development plan for this role.
+```
+
+### Research
+
+Invoke after describing a task to get research output before planning or coding.
+
+**Example prompt:**
+```
+Add caching to the API layer.
+/research
+```
+
+Or:
+```
+The login flow has a bug where session tokens expire too early.
+/research
 ```
 
 ### Swift Package Manifest
